@@ -1,4 +1,4 @@
-package br.com.carlosmolin.pbanalyzer.model;
+package br.com.carlosmolin.pbanalyzer.core.report;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,5 +21,10 @@ public class Report {
 
     public String getAnalyzerName() {
         return analyzerName;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + entries.stream().map(ReportEntry::toString) + ")";
     }
 }

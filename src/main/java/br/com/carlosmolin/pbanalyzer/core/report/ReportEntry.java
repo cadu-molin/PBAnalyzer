@@ -1,4 +1,4 @@
-package br.com.carlosmolin.pbanalyzer.model;
+package br.com.carlosmolin.pbanalyzer.core.report;
 
 public class ReportEntry {
     private final String ruleName;

@@ -1,11 +1,11 @@
-package br.com.carlosmolin.pbanalyzer.analyzers;
+package br.com.carlosmolin.pbanalyzer.analyzers.powerscript;
 
-import br.com.carlosmolin.pbanalyzer.core.CodeAnalyzer;
-import br.com.carlosmolin.pbanalyzer.model.Report;
+import br.com.carlosmolin.pbanalyzer.core.analyzer.PowerScriptAnalyzer;
+import br.com.carlosmolin.pbanalyzer.core.report.Report;
 import br.com.carlosmolin.pbanalyzer.parser.PowerBuilderParserBaseListener;
 
 
-public class NamingConventionAnalyzer extends PowerBuilderParserBaseListener implements CodeAnalyzer {
+public class NamingConventionAnalyzer extends PowerBuilderParserBaseListener implements PowerScriptAnalyzer {
 
     private final Report report = new Report("NamingConventionAnalyzer");
 

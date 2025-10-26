@@ -1,8 +1,7 @@
-package br.com.carlosmolin.pbanalyzer.core;
+package br.com.carlosmolin.pbanalyzer.core.analyzer;
 
-import br.com.carlosmolin.pbanalyzer.model.Report;
+import br.com.carlosmolin.pbanalyzer.core.report.Report;
 import br.com.carlosmolin.pbanalyzer.parser.PowerBuilderParser;
-import br.com.carlosmolin.pbanalyzer.parser.PowerBuilderParserBaseListener;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
@@ -14,14 +13,14 @@ import java.util.ArrayList;
 
 public class AnalyzerManager implements ParseTreeListener {
 
-    private final List<CodeAnalyzer> analyzers = new ArrayList<>();
+    private final List<PowerScriptAnalyzer> analyzers = new ArrayList<>();
     private final PowerBuilderParser parser; // necessário para obter rule names
 
     public AnalyzerManager(PowerBuilderParser parser) {
         this.parser = parser;
     }
 
-    public void addAnalyzer(CodeAnalyzer a) { analyzers.add(a); }
+    public void addAnalyzer(PowerScriptAnalyzer a) { analyzers.add(a); }
 
     @Override
     public void enterEveryRule(ParserRuleContext ctx) {
@@ -54,7 +53,7 @@ public class AnalyzerManager implements ParseTreeListener {
         String ruleName = ruleNames[idx];               // ex: "goto_statement"
         String methodName = prefix + capitalize(ruleName); // ex: "enterGoto_statement"
 
-        for (CodeAnalyzer a : analyzers) {
+        for (PowerScriptAnalyzer a : analyzers) {
             // procura um método com o nome e que aceite o tipo do ctx (ou supertipo)
             Method m = findCompatibleMethod(a.getClass(), methodName, ctx.getClass());
             if (m != null) {
@@ -87,7 +86,7 @@ public class AnalyzerManager implements ParseTreeListener {
 
     public List<Report> collectReports() {
         List<Report> reports = new ArrayList<>();
-        for (CodeAnalyzer analyzer : analyzers) {
+        for (PowerScriptAnalyzer analyzer : analyzers) {
             reports.add(analyzer.getReport());
         }
         return reports;

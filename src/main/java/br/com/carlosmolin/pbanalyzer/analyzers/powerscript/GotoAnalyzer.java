@@ -1,13 +1,13 @@
-package br.com.carlosmolin.pbanalyzer.analyzers;
+package br.com.carlosmolin.pbanalyzer.analyzers.powerscript;
 
-import br.com.carlosmolin.pbanalyzer.core.CodeAnalyzer;
-import br.com.carlosmolin.pbanalyzer.model.Report;
-import br.com.carlosmolin.pbanalyzer.model.ReportEntry;
-import br.com.carlosmolin.pbanalyzer.model.Severity;
+import br.com.carlosmolin.pbanalyzer.core.analyzer.PowerScriptAnalyzer;
+import br.com.carlosmolin.pbanalyzer.core.report.Report;
+import br.com.carlosmolin.pbanalyzer.core.report.ReportEntry;
+import br.com.carlosmolin.pbanalyzer.core.report.Severity;
 import br.com.carlosmolin.pbanalyzer.parser.PowerBuilderParser;
 import br.com.carlosmolin.pbanalyzer.parser.PowerBuilderParserBaseListener;
 
-public class GotoAnalyzer extends PowerBuilderParserBaseListener implements CodeAnalyzer {
+public class GotoAnalyzer extends PowerBuilderParserBaseListener implements PowerScriptAnalyzer {
 
     private final Report report = new Report("GotoAnalyzer");
 
