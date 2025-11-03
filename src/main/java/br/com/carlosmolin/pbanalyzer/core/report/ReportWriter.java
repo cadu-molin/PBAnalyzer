@@ -21,8 +21,6 @@ public class ReportWriter {
         JSONObject json = new JSONObject();
         JSONArray problemasArray = new JSONArray();
 
-        json.put("totalArquivos", 1);
-
         for (Report report : reports) {
             JSONObject reportJson = new JSONObject();
             JSONArray entriesArray = new JSONArray();
@@ -42,6 +40,33 @@ public class ReportWriter {
 
             problemasArray.put(reportJson);
         }
+
+        json.put("problemasDetectados", problemasArray);
+
+        return json;
+    }
+
+    public static JSONObject toJson(Report report) {
+        JSONObject json = new JSONObject();
+        JSONArray problemasArray = new JSONArray();
+
+        JSONObject reportJson = new JSONObject();
+        JSONArray entriesArray = new JSONArray();
+
+        reportJson.put("analyzer", report.getAnalyzerName());
+
+        for (ReportEntry entry : report.getEntries()) {
+            JSONObject entryJson = new JSONObject();
+            entryJson.put("regra", entry.getRuleName());
+            entryJson.put("mensagem", entry.getMessage());
+            entryJson.put("linha", entry.getLine());
+            entryJson.put("gravidade", entry.getSeverity().toString());
+            entriesArray.put(entryJson);
+        }
+
+        reportJson.put("ocorrencias", entriesArray);
+
+        problemasArray.put(reportJson);
 
         json.put("problemasDetectados", problemasArray);
 
