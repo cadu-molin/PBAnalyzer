@@ -1,0 +1,17 @@
+{"problemasDetectados": [{
+    "ocorrencias": [
+        {
+            "regra": "IdReferenceAnalyzer",
+            "mensagem": "Coluna 'exam_xref_info_object_ref' possui ID incorreto (2). Esperado: 'exam_xref_info_object_ref_type' (posição 2).",
+            "linha": 0,
+            "gravidade": "ERROR"
+        },
+        {
+            "regra": "IdReferenceAnalyzer",
+            "mensagem": "Coluna 'exam_xref_info_object_ref_type' possui ID incorreto (3). Esperado: 'exam_xref_info_object_ref' (posição 3).",
+            "linha": 0,
+            "gravidade": "ERROR"
+        }
+    ],
+    "analyzer": "IdReferenceAnalyzer"
+}]}

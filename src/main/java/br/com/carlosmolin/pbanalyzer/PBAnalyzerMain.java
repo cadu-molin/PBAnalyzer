@@ -25,12 +25,14 @@ public class PBAnalyzerMain
 {
     public static void main( String[] args ) {
         try {
-            if (args.length == 0) {
-                System.err.println("Nenhum arquivo informado.");
-                System.exit(2);
-            }
-
-            Path filePath = Paths.get(args[0]);
+//            if (args.length == 0) {
+//                System.err.println("Nenhum arquivo informado.");
+//                System.exit(2);
+//            }
+//
+//            Path filePath = Paths.get(args[0]);
+//            Path filePath = Paths.get("C:\\Projetos\\Faculdade\\TCC\\PBAnalyzer\\mock\\PowerScriptExemple.srw");
+            Path filePath = Paths.get("C:\\Projetos\\Faculdade\\TCC\\PBAnalyzer\\mock\\DataWindowExemple.srd");
             String fileName = filePath.getFileName().toString();
             FileType type = FileType.fromFilename(fileName);
 
@@ -80,9 +82,8 @@ public class PBAnalyzerMain
 
     private static void analyzeDataObject(Path filePath) throws Exception {
         System.out.println("Analisando: " + filePath);
-        String content = Files.readString(filePath);
 
-        IdReferenceAnalyzer dataObjectAnalyzer = new IdReferenceAnalyzer(content);
+        IdReferenceAnalyzer dataObjectAnalyzer = new IdReferenceAnalyzer(filePath);
 
         dataObjectAnalyzer.analyze();
 
