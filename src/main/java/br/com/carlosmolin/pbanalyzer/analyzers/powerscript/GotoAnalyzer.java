@@ -3,13 +3,13 @@ package br.com.carlosmolin.pbanalyzer.analyzers.powerscript;
 import br.com.carlosmolin.pbanalyzer.core.analyzer.PowerScriptAnalyzer;
 import br.com.carlosmolin.pbanalyzer.core.report.Report;
 import br.com.carlosmolin.pbanalyzer.core.report.ReportEntry;
-import br.com.carlosmolin.pbanalyzer.core.report.Severity;
+import br.com.carlosmolin.pbanalyzer.enums.Severity;
 import br.com.carlosmolin.pbanalyzer.parser.PowerBuilderParser;
 import br.com.carlosmolin.pbanalyzer.parser.PowerBuilderParserBaseListener;
 
 public class GotoAnalyzer extends PowerBuilderParserBaseListener implements PowerScriptAnalyzer {
-
-    private final Report report = new Report("GotoAnalyzer");
+    private String ruleName = "Uso de Goto";
+    private final Report report = new Report("PowerScriptAnalyzer");
 
     @Override
     public void enterGoto_statement(PowerBuilderParser.Goto_statementContext ctx) {
@@ -19,8 +19,8 @@ public class GotoAnalyzer extends PowerBuilderParserBaseListener implements Powe
         if (qtd >= 1) {
             String targetLabel = ctx.variable_name(0).getText();
             report.addEntry(new ReportEntry(
-                    "goto_statement",
-                    "Declaração de comando GOTO detectado: " + targetLabel,
+                    ruleName,
+                    "Declaração de comando GOTO: " + targetLabel,
                     ctx.getStart().getLine(),
                     Severity.WARNING
             ));
@@ -30,9 +30,9 @@ public class GotoAnalyzer extends PowerBuilderParserBaseListener implements Powe
         if (qtd >= 2) {
             String definedLabel = ctx.variable_name(1).getText();
             report.addEntry(new ReportEntry(
-                    "goto_statement",
-                    "Definição do label \"" + definedLabel + "\" associada ao GOTO",
-                    ctx.getStart().getLine(),
+                    ruleName,
+                    "Definição do label '" + definedLabel + "'",
+                    ctx.getStop().getLine(),
                     Severity.WARNING
             ));
         }
@@ -40,7 +40,7 @@ public class GotoAnalyzer extends PowerBuilderParserBaseListener implements Powe
         // Caso não haja nenhum nome (GOTO malformado)
         if (qtd == 0) {
             report.addEntry(new ReportEntry(
-                    "goto_statement",
+                    ruleName,
                     "Uso de comando GOTO sem label",
                     ctx.getStart().getLine(),
                     Severity.WARNING

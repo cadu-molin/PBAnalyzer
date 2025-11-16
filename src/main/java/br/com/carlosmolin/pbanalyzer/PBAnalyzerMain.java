@@ -16,7 +16,6 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -25,14 +24,14 @@ public class PBAnalyzerMain
 {
     public static void main( String[] args ) {
         try {
-//            if (args.length == 0) {
-//                System.err.println("Nenhum arquivo informado.");
-//                System.exit(2);
-//            }
-//
-//            Path filePath = Paths.get(args[0]);
+            if (args.length == 0) {
+                System.err.println("Nenhum arquivo informado.");
+                System.exit(2);
+            }
+
+            Path filePath = Paths.get(args[0]);
 //            Path filePath = Paths.get("C:\\Projetos\\Faculdade\\TCC\\PBAnalyzer\\mock\\PowerScriptExemple.srw");
-            Path filePath = Paths.get("C:\\Projetos\\Faculdade\\TCC\\PBAnalyzer\\mock\\DataWindowExemple.srd");
+//            Path filePath = Paths.get("C:\\Projetos\\Faculdade\\TCC\\PBAnalyzer\\mock\\DataWindowExemple.srd");
             String fileName = filePath.getFileName().toString();
             FileType type = FileType.fromFilename(fileName);
 
@@ -71,12 +70,12 @@ public class PBAnalyzerMain
 
         List<Report> reports = analyzers.collectReports();
 
-        if (!reports.isEmpty()) {
-            Files.writeString(Path.of("relatorio.json"), ReportWriter.toJson(reports).toString(4));
-            System.exit(1);
-        } else {
+        if (reports.isEmpty()) {
             System.out.println("Nenhum problema encontrado.");
             System.exit(0);
+        } else {
+            ReportWriter.appendReport(reports, filePath.getFileName().toString(), "relatorio.json");
+            System.exit(1);
         }
     }
 
@@ -89,12 +88,12 @@ public class PBAnalyzerMain
 
         Report reports = dataObjectAnalyzer.getReport();
 
-        if (!reports.getEntries().isEmpty()) {
-            Files.writeString(Path.of("relatorio.json"), ReportWriter.toJson(reports).toString(4));
-            System.exit(1);
-        } else {
+        if (reports.getEntries().isEmpty()) {
             System.out.println("Nenhum problema encontrado.");
             System.exit(0);
+        } else {
+            ReportWriter.appendReport(List.of(reports), filePath.getFileName().toString(), "relatorio.json");
+            System.exit(1);
         }
     }
 }

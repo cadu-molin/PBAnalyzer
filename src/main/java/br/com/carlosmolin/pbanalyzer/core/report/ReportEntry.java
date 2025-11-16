@@ -1,5 +1,7 @@
 package br.com.carlosmolin.pbanalyzer.core.report;
 
+import br.com.carlosmolin.pbanalyzer.enums.Severity;
+
 public class ReportEntry {
     private final String ruleName;
     private final String message;

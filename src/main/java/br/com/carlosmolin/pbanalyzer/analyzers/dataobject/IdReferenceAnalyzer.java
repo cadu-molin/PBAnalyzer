@@ -3,7 +3,7 @@ package br.com.carlosmolin.pbanalyzer.analyzers.dataobject;
 import br.com.carlosmolin.pbanalyzer.core.analyzer.DataObjectAnalyzer;
 import br.com.carlosmolin.pbanalyzer.core.report.Report;
 import br.com.carlosmolin.pbanalyzer.core.report.ReportEntry;
-import br.com.carlosmolin.pbanalyzer.core.report.Severity;
+import br.com.carlosmolin.pbanalyzer.enums.Severity;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,12 +11,13 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class IdReferenceAnalyzer implements DataObjectAnalyzer {
 
-    private final Report report = new Report("IdReferenceAnalyzer");
+    private final Report report = new Report("DataObjectAnalyzer");
     private Path filePath;
 
     public IdReferenceAnalyzer(Path filePath) {
@@ -31,8 +32,10 @@ public class IdReferenceAnalyzer implements DataObjectAnalyzer {
             Pattern namePattern = Pattern.compile("name=([a-zA-Z0-9_]+)");
             AtomicBoolean readingTable = new AtomicBoolean(false);
             List<String> tableColumnNames = new ArrayList<>();
+            AtomicInteger count = new AtomicInteger(1);
 
             Files.lines(filePath).forEach(linha -> {
+                int lineCount = count.getAndIncrement();
                 if(linha.trim().startsWith("table(")) {
                     readingTable.set(true);
 
@@ -67,12 +70,12 @@ public class IdReferenceAnalyzer implements DataObjectAnalyzer {
                         String expectedName = tableColumnNames.get(id - 1);
                         if (!expectedName.equals(name)) {
                             report.addEntry(new ReportEntry(
-                                    "IdReferenceAnalyzer",
+                                    "Inconsistência no DataObject",
                                     String.format(
-                                            "Coluna '%s' possui ID incorreto (%d). Esperado: '%s' (posição %d).",
-                                            name, id, expectedName, id
+                                            "Coluna '%s' possui ID incorreto (%d), esse ID pertence a Coluna '%s'",
+                                            name, id, expectedName
                                     ),
-                                    0,
+                                    lineCount,
                                     Severity.ERROR
                             ));
                         }
