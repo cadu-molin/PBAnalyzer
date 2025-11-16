@@ -1,4 +1,5 @@
 @echo off
+chcp 65001 >nul
 setlocal
 
 set JAR="C:\Projetos\Faculdade\TCC\PBAnalyzer\target\pbanalyzer-1.0-SNAPSHOT.jar"
