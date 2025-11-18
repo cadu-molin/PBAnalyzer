@@ -36,7 +36,7 @@ public class PBAnalyzerMain
             if (vf.getType() == FileType.DATAWINDOW) {
                 analyzeDataWindow(vf.getPath());
             } else {
-                analyzePowerScript(vf.getPath());
+                analyzeWindow(vf.getPath());
             }
 
         } catch (Exception e) {
@@ -45,7 +45,7 @@ public class PBAnalyzerMain
         }
     }
 
-    private static void analyzePowerScript(Path filePath) throws Exception {
+    private static void analyzeWindow(Path filePath) throws Exception {
         System.out.println("Analisando: " + filePath);
         CharStream input = CharStreams.fromPath(filePath);
         PowerBuilderLexer lexer = new PowerBuilderLexer(input);
