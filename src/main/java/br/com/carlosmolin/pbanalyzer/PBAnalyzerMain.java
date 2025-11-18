@@ -1,15 +1,16 @@
 package br.com.carlosmolin.pbanalyzer;
 
-import br.com.carlosmolin.pbanalyzer.analyzers.dataobject.IdReferenceAnalyzer;
-import br.com.carlosmolin.pbanalyzer.analyzers.powerscript.GotoAnalyzer;
-import br.com.carlosmolin.pbanalyzer.analyzers.powerscript.OleObjectAnalyzer;
-import br.com.carlosmolin.pbanalyzer.analyzers.powerscript.TryCatchFinallyAnalyzer;
-import br.com.carlosmolin.pbanalyzer.core.analyzer.AnalyzerManager;
-import br.com.carlosmolin.pbanalyzer.core.report.Report;
-import br.com.carlosmolin.pbanalyzer.core.report.ReportWriter;
+import br.com.carlosmolin.pbanalyzer.analysis.datawindow.impl.IdReferenceAnalyzer;
+import br.com.carlosmolin.pbanalyzer.analysis.window.impl.GotoAnalyzer;
+import br.com.carlosmolin.pbanalyzer.analysis.window.impl.OleObjectAnalyzer;
+import br.com.carlosmolin.pbanalyzer.analysis.window.impl.TryCatchFinallyAnalyzer;
+import br.com.carlosmolin.pbanalyzer.antlr.window.PowerBuilderLexer;
+import br.com.carlosmolin.pbanalyzer.antlr.window.PowerBuilderParser;
+import br.com.carlosmolin.pbanalyzer.analysis.AnalyzerManager;
+import br.com.carlosmolin.pbanalyzer.report.Report;
+import br.com.carlosmolin.pbanalyzer.report.ReportWriter;
 import br.com.carlosmolin.pbanalyzer.enums.FileType;
-import br.com.carlosmolin.pbanalyzer.parser.PowerBuilderLexer;
-import br.com.carlosmolin.pbanalyzer.parser.PowerBuilderParser;
+import br.com.carlosmolin.pbanalyzer.validator.FileValidator;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -17,33 +18,25 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 public class PBAnalyzerMain
 {
     public static void main( String[] args ) {
+        FileValidator validator = new FileValidator();
+
         try {
-            if (args.length == 0) {
-                System.err.println("Nenhum arquivo informado.");
-                System.exit(2);
+            FileValidator.ValidatedFile vf = validator.validateAndDetect(args);
+
+            if (vf.getType() == FileType.UNKNOWN) {
+                System.out.println("Ignorando arquivo não suportado: " + vf.getPath().getFileName());
+                return;
             }
 
-            Path filePath = Paths.get(args[0]);
-//            Path filePath = Paths.get("C:\\Projetos\\Faculdade\\TCC\\PBAnalyzer\\mock\\PowerScriptExemple.srw");
-//            Path filePath = Paths.get("C:\\Projetos\\Faculdade\\TCC\\PBAnalyzer\\mock\\DataWindowExemple.srd");
-            String fileName = filePath.getFileName().toString();
-            FileType type = FileType.fromFilename(fileName);
-
-            if (type == FileType.UNKNOWN) {
-                System.out.println("Ignorando arquivo não suportado: " + fileName);
-                System.exit(0);
-            }
-
-            if (type == FileType.DATAOBJECT) {
-                analyzeDataObject(filePath);
+            if (vf.getType() == FileType.DATAWINDOW) {
+                analyzeDataWindow(vf.getPath());
             } else {
-                analyzePowerScript(filePath);
+                analyzePowerScript(vf.getPath());
             }
 
         } catch (Exception e) {
@@ -79,14 +72,14 @@ public class PBAnalyzerMain
         }
     }
 
-    private static void analyzeDataObject(Path filePath) throws Exception {
+    private static void analyzeDataWindow(Path filePath) throws Exception {
         System.out.println("Analisando: " + filePath);
 
-        IdReferenceAnalyzer dataObjectAnalyzer = new IdReferenceAnalyzer(filePath);
+        IdReferenceAnalyzer dataWindowAnalyzer = new IdReferenceAnalyzer(filePath);
 
-        dataObjectAnalyzer.analyze();
+        dataWindowAnalyzer.analyze();
 
-        Report reports = dataObjectAnalyzer.getReport();
+        Report reports = dataWindowAnalyzer.getReport();
 
         if (reports.getEntries().isEmpty()) {
             System.out.println("Nenhum problema encontrado.");

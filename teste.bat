@@ -2,6 +2,12 @@
 chcp 65001 >nul
 setlocal
 
+set "FILE=%~dp0relatorio.json"
+
+if exist "%FILE%" (
+    del /f /q "%FILE%"
+)
+
 set JAR="C:\Projetos\Faculdade\TCC\PBAnalyzer\target\pbanalyzer-1.0-SNAPSHOT.jar"
 set DIR_ANALISE="C:\Projetos\Faculdade\TCC\PBAnalyzer\mock"
 

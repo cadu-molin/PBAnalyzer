@@ -2,11 +2,11 @@ package br.com.carlosmolin.pbanalyzer.enums;
 
 public enum FileType {
     WINDOW(".srw"),
-    USEROBJECT(".sru"),
-    DATAOBJECT(".srd"),
-    FUNCTION(".srf"),
-    STRUCT(".srs"),
-    APPLICATION(".sra"),
+    DATAWINDOW(".srd"),
+//    USEROBJECT(".sru"),
+//    FUNCTION(".srf"),
+//    STRUCT(".srs"),
+//    APPLICATION(".sra"),
     UNKNOWN("");
 
     private final String extension;
