@@ -60,6 +60,7 @@ UINT            : 'UINT';
 UNSIGNEDLONG    : 'UNSIGNEDLONG';
 ULONG           : 'ULONG';
 WINDOW          : 'WINDOW';
+OLEOBJECT       : 'OLEOBJECT';
 TRUE            : 'TRUE';
 FALSE           : 'FALSE';
 GLOBAL          : 'GLOBAL';

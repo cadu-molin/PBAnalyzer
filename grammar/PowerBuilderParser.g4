@@ -718,4 +718,5 @@ dataTypeSub
     | UNSIGNEDLONG
     | ULONG
     | WINDOW
+    | OLEOBJECT
     ;

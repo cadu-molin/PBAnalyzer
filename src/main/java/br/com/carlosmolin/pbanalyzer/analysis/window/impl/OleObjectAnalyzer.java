@@ -12,13 +12,13 @@ public class OleObjectAnalyzer extends PowerBuilderParserBaseListener implements
     private final Report report = new Report("WindowAnalyzer");
 
     @Override
-    public void enterVariable_decl(PowerBuilderParser.Variable_declContext ctx) {
+    public void enterData_type_name(PowerBuilderParser.Data_type_nameContext ctx) {
         String text = ctx.getText().toLowerCase();
 
-        if (text.contains("oleobject")) {
+        if ("oleobject".equalsIgnoreCase(text)) {
             report.addEntry(new ReportEntry(
                     "Uso de OleObject",
-                    "Encontrada declaração de OleObject",
+                    "Identificado uso de OleObject",
                     ctx.getStart().getLine(),
                     Severity.WARNING
             ));
